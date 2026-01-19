@@ -1,43 +1,44 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-function App() {
-  const [count, setCount] = useState(0);
+import { Routes, Route } from 'react-router-dom';
+import Header from './components/container/Header';
+import Footer from './components/container/Footer';
+import Hero from './components/container/Hero';
+import Trending from './components/container/Trending';
+import NewRelease from './components/container/NewRelease';
+import MovieDetail from './components/container/MovieDetail';
+import FavoritesPage from './components/container/Favorites';
+import { SelectedMovieProvider } from './components/context/SelectedMovieProvider';
+import { FavoritesProvider } from './components/context/FavoritesProvider';
+import { Toaster } from 'sonner';
 
+const HomePage = () => (
+  <>
+    <Hero />
+    <Trending />
+    <NewRelease />
+  </>
+);
+
+function App() {
   return (
-    <>
-      <div>
-        <a
-          href='https://vite.dev'
-          target='_blank'
-        >
-          <img
-            src={viteLogo}
-            className='logo'
-            alt='Vite logo'
+    <SelectedMovieProvider>
+      <FavoritesProvider>
+        <div className='bg-black text-white font-[Poppins] min-h-screen flex flex-col'>
+          <Header />
+          <main className='flex-1'>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/movie/:id' element={<MovieDetail />} />
+              <Route path='/favorites' element={<FavoritesPage />} />
+            </Routes>
+          </main>
+          <Footer />
+          <Toaster
+            position='top-center'
+            visibleToasts={1} // only one toast at a time
           />
-        </a>
-        <a
-          href='https://react.dev'
-          target='_blank'
-        >
-          <img
-            src={reactLogo}
-            className='logo react'
-            alt='React logo'
-          />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-    </>
+        </div>
+      </FavoritesProvider>
+    </SelectedMovieProvider>
   );
 }
 
